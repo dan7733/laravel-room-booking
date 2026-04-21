@@ -1,0 +1,53 @@
+/* Card giao diện Admin */
+.admin-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    overflow: hidden;
+}
+
+/* Tiêu đề trang */
+.admin-title {
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: -0.5px;
+}
+
+/* Bảng dữ liệu (Table) */
+.admin-table th {
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+}
+.admin-table td {
+    vertical-align: middle;
+    color: #495057;
+}
+.admin-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+.admin-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Nút hành động nhỏ trong bảng */
+.btn-action {
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.875rem;
+    transition: transform 0.2s;
+}
+.btn-action:hover {
+    transform: translateY(-2px);
+}
+
+/* Nút Switch (Công tắc) cho Trạng thái */
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    cursor: pointer;
+}
