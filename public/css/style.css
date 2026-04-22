@@ -1,15 +1,64 @@
-/* Hiệu ứng mượt cho toàn bộ trang */
+/* Ép Footer luôn nằm dưới đáy màn hình */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+.main-content {
+    flex: 1; /* Đẩy footer xuống dưới cùng */
+}
+
 /* Hiệu ứng bo góc và đổ bóng cho các Card */
 .card {
     border: none;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
+
 /* Kính mờ cho thanh Navbar */
 .navbar {
     backdrop-filter: blur(10px);
     background-color: rgba(33, 37, 41, 0.95) !important;
+}
+
+/* --- CSS CHO FOOTER CHUYÊN NGHIỆP --- */
+.main-footer {
+    background-color: #111418 !important; /* Ép màu nền tối */
+    color: #adb5bd !important; /* Màu chữ xám nhạt cho dễ đọc */
+    border-top: 1px solid #2d3238;
+}
+
+/* Ép tiêu đề RoomBooking và các tiêu đề cột luôn là màu trắng */
+.main-footer h4, 
+.main-footer h5, 
+.main-footer .navbar-brand {
+    color: #ffffff !important;
+}
+
+.text-primary-hover {
+    transition: color 0.3s ease;
+    color: #adb5bd !important; /* Mặc định màu xám */
+}
+
+.text-primary-hover:hover {
+    color: #0d6efd !important; /* Hover sang xanh */
+}
+
+.social-icon-footer {
+    width: 36px; /* Giảm nhẹ kích thước icon trên mobile */
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #212529;
+    color: #adb5bd !important;
+    transition: all 0.3s ease;
+}
+
+.social-icon-footer:hover {
+    background-color: #0d6efd;
+    color: white !important;
+    transform: translateY(-3px);
 }

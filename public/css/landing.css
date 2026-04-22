@@ -1,0 +1,107 @@
+/* Thiết lập Slider toàn màn hình */
+.hero-slider .carousel-item {
+    height: 80vh;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+/* Lớp phủ đen mờ lên ảnh Slider để chữ nổi bật */
+.hero-slider .carousel-item::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 80%;
+    z-index: 2;
+}
+
+/* Hiệu ứng cho thẻ Dịch vụ (Hồ bơi, Cafe...) */
+.service-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 350px;
+    position: relative;
+    cursor: pointer;
+}
+.service-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.service-card:hover img {
+    transform: scale(1.1); /* Phóng to ảnh nhẹ khi di chuột */
+}
+/* Dải Gradient đen dưới đáy thẻ dịch vụ */
+.service-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 30px 20px 20px;
+    color: white;
+    text-align: center;
+}
+
+/* Hiệu ứng cuộn trang (Fade in up) */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease-out;
+}
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* bổ sung thêm */
+.room-horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+    scroll-snap-type: x mandatory; /* Hút màn hình mượt mà */
+    
+    /* Thiết kế thanh scrollbar (Cho Chrome/Safari/Edge) */
+    scrollbar-width: thin;
+    scrollbar-color: #0d6efd #f8f9fa;
+}
+
+.room-horizontal-scroll::-webkit-scrollbar {
+    height: 10px;
+}
+.room-horizontal-scroll::-webkit-scrollbar-track {
+    background: #e9ecef;
+    border-radius: 10px;
+}
+.room-horizontal-scroll::-webkit-scrollbar-thumb {
+    background: #0d6efd;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+}
+.room-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+    background: #0b5ed7;
+}
+
+/* Định dạng từng Card bên trong để không bị bóp méo */
+.room-card-wrapper {
+    flex: 0 0 auto; /* Không cho phép co giãn linh tinh */
+    width: 350px; /* Chiều rộng cố định cho mỗi thẻ phòng */
+    scroll-snap-align: start; /* Điểm neo khi vuốt */
+}
+
+/* Ẩn bớt mô tả dài để các thẻ cao bằng nhau */
+.room-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Chỉ hiện 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
