@@ -9,8 +9,8 @@ class Room extends Model
 {
     use HasFactory;
 
-    // Các trường cho phép thêm dữ liệu hàng loạt (Mass Assignment)
-    protected $fillable = ['name', 'capacity', 'description', 'status'];
+    // ĐÃ THÊM: price và image
+    protected $fillable = ['name', 'capacity', 'price', 'description', 'image', 'status'];
 
     public function bookings()
     {

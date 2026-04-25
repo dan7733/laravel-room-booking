@@ -12,7 +12,8 @@ class StoreBookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Đã sửa từ false thành true để cho phép user vượt qua cổng bảo vệ
+        return true;
     }
 
     /**
@@ -24,7 +25,7 @@ class StoreBookingRequest extends FormRequest
     {
         return [
             'start_time' => 'required|date|after:now',
-            'end_time' => 'required|date|after:start_time',
+            'end_time'   => 'required|date|after:start_time',
         ];
     }
 }

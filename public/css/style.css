@@ -1,64 +1,142 @@
-/* Ép Footer luôn nằm dưới đáy màn hình */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+/* --- BẢNG MÀU LUXURY (ONYX + CRIMSON + GOLD) --- */
+:root {
+    --crimson: #A6192E;      
+    --crimson-hover: #851425;
+    --gold: #D4AF37;         
+    --gold-hover: #B5952F;
+    --dark-bg: #1a1a1c;      
+    --charcoal: #252528;     
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-main);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
-.main-content {
-    flex: 1; /* Đẩy footer xuống dưới cùng */
+
+.main-content { flex: 1; }
+
+/* --- KHỬ TRIỆT ĐỂ MÀU XANH DƯƠNG MẶC ĐỊNH --- */
+a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+a:hover {
+    color: var(--crimson);
 }
 
-/* Hiệu ứng bo góc và đổ bóng cho các Card */
+.form-control:focus, 
+.form-check-input:focus, 
+.btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25) !important;
+    border-color: var(--gold) !important;
+}
+
+/* Các thẻ (Card) mặc định trên toàn hệ thống */
 .card {
-    border: none;
+    background-color: var(--charcoal);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    color: var(--text-main);
 }
 
-/* Kính mờ cho thanh Navbar */
+/* --- NAVBAR LUXURY --- */
 .navbar {
-    backdrop-filter: blur(10px);
-    background-color: rgba(33, 37, 41, 0.95) !important;
+    backdrop-filter: blur(15px);
+    background-color: rgba(26, 26, 28, 0.85) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #fff !important;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: var(--gold) !important;
 }
 
-/* --- CSS CHO FOOTER CHUYÊN NGHIỆP --- */
+/* --- UTILITIES --- */
+.text-crimson { color: var(--crimson) !important; }
+.text-gold { color: var(--gold) !important; }
+
+/* NÚT BẤM GLOBAL */
+.btn-crimson {
+    background: linear-gradient(135deg, #c41e3a 0%, var(--crimson) 100%);
+    color: white !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(166, 25, 46, 0.3);
+    transition: all 0.3s ease;
+}
+.btn-crimson:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(166, 25, 46, 0.5);
+}
+.btn-outline-gold {
+    border: 1px solid var(--gold);
+    color: var(--gold) !important;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+.btn-outline-gold:hover {
+    background: var(--gold) !important;
+    color: var(--dark-bg) !important;
+}
+
+/* --- FOOTER LUXURY --- */
 .main-footer {
-    background-color: #111418 !important; /* Ép màu nền tối */
-    color: #adb5bd !important; /* Màu chữ xám nhạt cho dễ đọc */
-    border-top: 1px solid #2d3238;
+    background-color: #111112 !important; /* Đen sâu hơn một chút để tạo độ khối */
+    color: var(--text-muted) !important;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
 }
-
-/* Ép tiêu đề RoomBooking và các tiêu đề cột luôn là màu trắng */
-.main-footer h4, 
-.main-footer h5, 
-.main-footer .navbar-brand {
+.main-footer h4, .main-footer h5 {
+    font-family: 'Playfair Display', serif;
     color: #ffffff !important;
 }
 
-.text-primary-hover {
-    transition: color 0.3s ease;
-    color: #adb5bd !important; /* Mặc định màu xám */
+/* Link ở Footer: Mặc định xám, rê chuột đổi Vàng Kim + trượt nhẹ */
+.footer-link {
+    color: var(--text-muted) !important;
+    display: inline-block;
+    transition: all 0.3s ease;
 }
-
-.text-primary-hover:hover {
-    color: #0d6efd !important; /* Hover sang xanh */
+.footer-link:hover {
+    color: var(--gold) !important;
+    transform: translateX(5px);
 }
 
 .social-icon-footer {
-    width: 36px; /* Giảm nhẹ kích thước icon trên mobile */
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    width: 38px; height: 38px;
+    display: inline-flex; align-items: center; justify-content: center;
     border-radius: 50%;
-    background-color: #212529;
-    color: #adb5bd !important;
-    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.social-icon-footer:hover {
+    background-color: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark-bg) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
 }
 
-.social-icon-footer:hover {
-    background-color: #0d6efd;
-    color: white !important;
-    transform: translateY(-3px);
-}
+/* --- CUSTOM SCROLLBAR --- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }

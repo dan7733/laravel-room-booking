@@ -9,7 +9,14 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'room_id', 'start_time', 'end_time', 'status'];
+    protected $fillable = [
+        'user_id',
+        'room_id',
+        'start_time',
+        'end_time',
+        'total_price', // Đã thêm
+        'status'
+    ];
 
     public function user()
     {

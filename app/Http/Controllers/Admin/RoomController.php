@@ -5,74 +5,91 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
-    // Hiển thị danh sách phòng
     public function index()
     {
-        $rooms = Room::paginate(10); // Thay vì Room::all()
+        $rooms = Room::latest()->paginate(10);
         return view('admin.rooms.index', compact('rooms'));
     }
 
-    // Form thêm phòng
     public function create()
     {
         return view('admin.rooms.create');
     }
 
-    // Xử lý lưu phòng mới (BƯỚC 2: VALIDATION NẰM Ở ĐÂY)
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'capacity' => 'required|numeric|min:1',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-        ], [
-            // Tùy chỉnh câu thông báo lỗi
-            'name.required' => 'Tên phòng không được để trống.',
-            'capacity.required' => 'Sức chứa không được để trống.',
-            'capacity.numeric' => 'Sức chứa phải là một số.',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        Room::create([
-            'name' => $request->name,
-            'capacity' => $request->capacity,
-            'description' => $request->description,
-            'status' => $request->has('status') ? 1 : 0 // Checkbox trạng thái
-        ]);
+        // Nếu checkbox bật thì status = 1, tắt thì = 0
+        $data['status'] = $request->has('status') ? 1 : 0;
 
-        return redirect()->route('admin.rooms.index')->with('success', 'Thêm phòng thành công!');
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('rooms', 'public');
+        }
+
+        Room::create($data);
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Thêm phòng mới thành công!');
     }
 
-    // Form sửa phòng
     public function edit(Room $room)
     {
         return view('admin.rooms.edit', compact('room'));
     }
 
-    // Xử lý cập nhật phòng
     public function update(Request $request, Room $room)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'capacity' => 'required|numeric|min:1',
+            'capacity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $room->update([
-            'name' => $request->name,
-            'capacity' => $request->capacity,
-            'description' => $request->description,
-            'status' => $request->has('status') ? 1 : 0
-        ]);
+        // Nếu checkbox bật thì status = 1, tắt thì = 0
+        $data['status'] = $request->has('status') ? 1 : 0;
 
-        return redirect()->route('admin.rooms.index')->with('success', 'Cập nhật phòng thành công!');
+        if ($request->hasFile('image')) {
+            if ($room->image) {
+                Storage::disk('public')->delete($room->image);
+            }
+            $data['image'] = $request->file('image')->store('rooms', 'public');
+        }
+
+        $room->update($data);
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Cập nhật thông tin phòng thành công!');
     }
 
-    // Xóa phòng
     public function destroy(Room $room)
     {
+        if ($room->image) {
+            Storage::disk('public')->delete($room->image);
+        }
         $room->delete();
-        return redirect()->route('admin.rooms.index')->with('success', 'Đã xóa phòng!');
+
+        return redirect()->route('admin.rooms.index')->with('success', 'Đã xóa phòng thành công!');
+    }
+
+    // ĐÃ SỬA: Chuyển đổi trạng thái bằng số 1 và 0
+    public function toggleStatus(Room $room)
+    {
+        // Nếu đang là 1 thì đổi thành 0, và ngược lại
+        $newStatus = $room->status == 1 ? 0 : 1;
+        $room->update(['status' => $newStatus]);
+
+        $message = $newStatus == 1 ? 'Đã mở cửa phòng thành công!' : 'Đã khóa phòng để bảo trì!';
+        return back()->with('success', $message);
     }
 }

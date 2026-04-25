@@ -11,10 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.type = 'text';
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
+                icon.style.color = 'var(--gold)'; // Thêm hiệu ứng màu vàng khi hiện pass
             } else {
                 input.type = 'password';
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
+                icon.style.color = ''; // Trả về màu mặc định
             }
         });
     });

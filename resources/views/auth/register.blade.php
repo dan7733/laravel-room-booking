@@ -11,67 +11,67 @@
             <div class="row g-0">
                 
                 <div class="col-md-5 d-none d-md-block auth-image-side" style="background-image: url('{{ asset('images/register.png') }}');">
-                    <div class="auth-image-overlay success-overlay">
-                        <i class="fa-solid fa-user-shield fa-4x mb-4 text-white opacity-75"></i>
-                        <h2 class="fw-bold mb-3">Tạo Mới</h2>
-                        <p class="fs-5 text-white-50">Đăng ký ngay hôm nay để trải nghiệm toàn bộ tiện ích và bắt đầu đặt phòng dễ dàng.</p>
+                    <div class="auth-image-overlay">
+                        <i class="fa-solid fa-gem fa-4x mb-4 opacity-75" style="color: var(--crimson);"></i>
+                        <h2 class="fw-bold mb-3 luxury-title">Đặc Quyền Mới</h2>
+                        <p class="text-white-50" style="font-size: 0.95rem; line-height: 1.6;">Gia nhập cộng đồng thượng lưu ngay hôm nay để trải nghiệm dịch vụ không gian làm việc số 1 khu vực.</p>
                     </div>
                 </div>
 
                 <div class="col-md-7 auth-form-side">
                     <div class="card-body p-4 p-lg-5">
                         <div class="text-center mb-4">
-                            <i class="fa-solid fa-user-plus fa-3x mb-3 text-success"></i>
-                            <h3 class="fw-bold mb-0">Tạo Tài Khoản</h3>
-                            <p class="text-muted mt-1">Điền thông tin để tham gia hệ thống</p>
+                            <i class="fa-solid fa-user-plus fa-3x mb-3 text-crimson"></i>
+                            <h3 class="fw-bold mb-0 luxury-title">Khởi Tạo Tài Khoản</h3>
+                            <p class="text-white-50 mt-2 small">Điền thông tin để kích hoạt thẻ hội viên</p>
                         </div>
                         
                         <form method="POST" action="/register">
                             @csrf
                             
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">Họ và Tên</label>
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-text"><i class="fa-solid fa-id-card"></i></span>
+                                <label class="form-label fw-bold"><i class="fa-solid fa-id-card me-1"></i> Họ và Tên</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
                                     <input type="text" name="name" class="form-control auth-input" placeholder="Nhập họ tên đầy đủ" value="{{ old('name') }}" required>
                                 </div>
-                                @error('name') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
+                                @error('name') <small class="text-danger mt-2 d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ $message }}</small> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-semibold">Địa chỉ Email</label>
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
-                                    <input type="email" name="email" class="form-control auth-input" placeholder="name@example.com" value="{{ old('email') }}" required>
+                                <label class="form-label fw-bold"><i class="fa-solid fa-envelope me-1"></i> Địa chỉ Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                                    <input type="email" name="email" class="form-control auth-input" placeholder="name@domain.com" value="{{ old('email') }}" required>
                                 </div>
-                                @error('email') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
+                                @error('email') <small class="text-danger mt-2 d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ $message }}</small> @enderror
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-6 mb-4">
-                                    <label class="form-label fw-semibold">Mật khẩu</label>
-                                    <div class="input-group input-group-lg">
-                                        <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
-                                        <input type="password" name="password" class="form-control auth-input" placeholder="Tạo mật khẩu" required>
-                                    </div>
-                                    @error('password') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
+                            <div class="mb-4">
+                                <label class="form-label fw-bold"><i class="fa-solid fa-key me-1"></i> Mật khẩu</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                    <input type="password" name="password" class="form-control auth-input" placeholder="Tạo mật khẩu bảo mật" required>
+                                    <span class="input-group-text toggle-password"><i class="fa-regular fa-eye"></i></span>
                                 </div>
+                                @error('password') <small class="text-danger mt-2 d-block"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ $message }}</small> @enderror
+                            </div>
 
-                                <div class="col-lg-6 mb-5">
-                                    <label class="form-label fw-semibold">Xác nhận</label>
-                                    <div class="input-group input-group-lg">
-                                        <span class="input-group-text"><i class="fa-solid fa-check-double"></i></span>
-                                        <input type="password" name="password_confirmation" class="form-control auth-input" placeholder="Nhập lại" required>
-                                    </div>
+                            <div class="mb-5">
+                                <label class="form-label fw-bold"><i class="fa-solid fa-check-double me-1"></i> Xác nhận mật khẩu</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-shield-halved"></i></span>
+                                    <input type="password" name="password_confirmation" class="form-control auth-input" placeholder="Nhập lại mật khẩu" required>
+                                    <span class="input-group-text toggle-password"><i class="fa-regular fa-eye"></i></span>
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold fs-5 shadow-sm rounded-pill">
-                                Đăng Ký Tài Khoản <i class="fa-solid fa-user-check ms-2"></i>
+                            <button type="submit" class="btn btn-crimson btn-lg w-100 py-3 fw-bold fs-6 shadow-sm rounded-pill mb-4">
+                                ĐĂNG KÝ HỘI VIÊN <i class="fa-solid fa-gem ms-2"></i>
                             </button>
                             
-                            <div class="text-center mt-4 text-muted">
-                                Đã có tài khoản? <a href="/login" class="text-decoration-none fw-bold text-success">Đăng nhập tại đây</a>
+                            <div class="text-center mt-2 text-white-50 small">
+                                Đã có thẻ hội viên? <a href="/login" class="text-decoration-none fw-bold text-gold ms-1 border-bottom border-gold pb-1">Đăng nhập tại đây</a>
                             </div>
                         </form>
                     </div>

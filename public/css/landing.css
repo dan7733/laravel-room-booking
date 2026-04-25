@@ -1,107 +1,241 @@
-/* Thiết lập Slider toàn màn hình */
+/* --- BIẾN MÀU SẮC LUXURY ĐỎ & ĐEN --- */
+:root {
+    --crimson: #9e1b1b; /* Đỏ Đô / Burgundy */
+    --crimson-hover: #7a1515;
+    --dark-bg: #0a0a0a; /* Đen tuyền tuyệt đối */
+    --charcoal: #171717; /* Đen xám cho khối Card */
+    --text-main: #f0f0f0; /* Trắng xám dịu mắt */
+    --text-muted: #a3a3a3;
+}
+
+/* --- TÙY CHỈNH FONT CHỮ CHUNG --- */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+}
+
+h1, h2, h3, h4, h5, h6, .luxury-title {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+}
+
+/* --- HERO SLIDER --- */
 .hero-slider .carousel-item {
-    height: 80vh;
-    min-height: 500px;
+    height: 85vh;
+    min-height: 650px;
     background-size: cover;
     background-position: center;
     position: relative;
 }
-/* Lớp phủ đen mờ lên ảnh Slider để chữ nổi bật */
 .hero-slider .carousel-item::before {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    /* Phủ lớp đen mờ để làm nổi bật chữ trắng */
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 0.95));
 }
 .hero-content {
     position: absolute;
-    top: 50%;
+    top: 45%; /* Đẩy khối chữ lên một chút để chừa chỗ cho thanh tìm kiếm */
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    width: 80%;
+    width: 90%;
+    max-width: 800px;
     z-index: 2;
 }
 
-/* Hiệu ứng cho thẻ Dịch vụ (Hồ bơi, Cafe...) */
+/* --- NÚT BẤM LUXURY (CRIMSON RED) --- */
+.btn-crimson {
+    background: linear-gradient(135deg, #c91818 0%, var(--crimson) 100%);
+    color: white;
+    border: none;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 10px 20px rgba(158, 27, 27, 0.2);
+    white-space: nowrap !important; /* Tránh rớt dòng */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-crimson:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px rgba(158, 27, 27, 0.4);
+    color: white;
+}
+.btn-outline-crimson {
+    border: 1px solid var(--crimson);
+    color: var(--crimson);
+    background: transparent;
+    transition: all 0.3s ease;
+}
+.btn-outline-crimson:hover {
+    background: var(--crimson);
+    color: white;
+}
+
+/* --- THANH TÌM KIẾM (DARK GLASSMORPHISM) --- */
+.search-section {
+    position: relative;
+    margin-top: -80px; /* Đẩy lên đè slider trên Desktop */
+    z-index: 10;
+}
+.luxury-search-bar {
+    background: rgba(23, 23, 23, 0.85); 
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 35px;
+}
+.luxury-input {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid #444 !important;
+    border-radius: 0 !important;
+    padding-left: 0;
+    font-weight: 600;
+    /* FIX LỖI CHỮ ĐEN: Ép màu trắng & báo trình duyệt đây là vùng tối */
+    color: #ffffff !important; 
+    color-scheme: dark; 
+    box-shadow: none !important;
+    transition: all 0.3s ease;
+}
+.luxury-input:focus {
+    border-bottom: 2px solid var(--crimson) !important;
+}
+
+/* Đổi icon lịch thành màu trắng trên Chrome/Safari desktop */
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* --- THẺ DỊCH VỤ --- */
 .service-card {
     border: none;
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
-    height: 350px;
+    height: 400px;
     position: relative;
     cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
 }
 .service-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 1s ease;
 }
 .service-card:hover img {
-    transform: scale(1.1); /* Phóng to ảnh nhẹ khi di chuột */
+    transform: scale(1.08);
 }
-/* Dải Gradient đen dưới đáy thẻ dịch vụ */
 .service-overlay {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-    padding: 30px 20px 20px;
+    background: linear-gradient(to top, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.5), transparent);
+    padding: 40px 30px 30px;
     color: white;
-    text-align: center;
+    transition: padding 0.4s ease;
+}
+.service-card:hover .service-overlay {
+    padding-bottom: 40px;
 }
 
-/* Hiệu ứng cuộn trang (Fade in up) */
+/* --- SCROLL NGANG (PHÒNG HỌP) --- */
+.room-horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem 1rem 3rem 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    cursor: grab;
+}
+.room-horizontal-scroll::-webkit-scrollbar {
+    display: none;
+}
+.room-horizontal-scroll:active {
+    cursor: grabbing;
+}
+.room-card-wrapper {
+    flex: 0 0 auto;
+    width: 360px;
+    scroll-snap-align: center;
+}
+
+/* --- THẺ PHÒNG (ROOM CARD DARK) --- */
+.luxury-room-card {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    transition: all 0.4s ease;
+    background: var(--charcoal);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.luxury-room-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(158, 27, 27, 0.15);
+    border-color: rgba(158, 27, 27, 0.3);
+}
+.room-header-lux {
+    background: linear-gradient(135deg, #111 0%, #000 100%);
+    padding: 40px 20px;
+    position: relative;
+    border-radius: 20px 20px 0 0;
+    border-bottom: 2px solid var(--crimson);
+}
+.crimson-badge {
+    background: var(--crimson);
+    color: white;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 30px;
+    padding: 8px 16px;
+    box-shadow: 0 4px 15px rgba(158, 27, 27, 0.5);
+}
+.room-icon-wrapper {
+    width: 80px; height: 80px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(158, 27, 27, 0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    color: var(--crimson);
+}
+
+/* --- HIỆU ỨNG REVEAL --- */
 .scroll-reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s ease-out;
+    transform: translateY(30px);
+    transition: all 0.9s cubic-bezier(0.5, 0, 0, 1);
 }
 .scroll-reveal.visible {
     opacity: 1;
     transform: translateY(0);
 }
-/* bổ sung thêm */
-.room-horizontal-scroll {
-    display: flex;
-    overflow-x: auto;
-    gap: 1.5rem;
-    padding-bottom: 2rem;
-    scroll-snap-type: x mandatory; /* Hút màn hình mượt mà */
+
+/* =========================================
+   FIX RESPONSIVE CHO ĐIỆN THOẠI (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+    /* Khôi phục lại khoảng cách thanh tìm kiếm để không đè nút */
+    .search-section {
+        margin-top: -30px; 
+    }
     
-    /* Thiết kế thanh scrollbar (Cho Chrome/Safari/Edge) */
-    scrollbar-width: thin;
-    scrollbar-color: #0d6efd #f8f9fa;
-}
-
-.room-horizontal-scroll::-webkit-scrollbar {
-    height: 10px;
-}
-.room-horizontal-scroll::-webkit-scrollbar-track {
-    background: #e9ecef;
-    border-radius: 10px;
-}
-.room-horizontal-scroll::-webkit-scrollbar-thumb {
-    background: #0d6efd;
-    border-radius: 10px;
-    border: 2px solid #e9ecef;
-}
-.room-horizontal-scroll::-webkit-scrollbar-thumb:hover {
-    background: #0b5ed7;
-}
-
-/* Định dạng từng Card bên trong để không bị bóp méo */
-.room-card-wrapper {
-    flex: 0 0 auto; /* Không cho phép co giãn linh tinh */
-    width: 350px; /* Chiều rộng cố định cho mỗi thẻ phòng */
-    scroll-snap-align: start; /* Điểm neo khi vuốt */
-}
-
-/* Ẩn bớt mô tả dài để các thẻ cao bằng nhau */
-.room-description {
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Chỉ hiện 2 dòng */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    /* Đẩy khối chữ lên cao hơn chút nữa trên điện thoại */
+    .hero-content {
+        top: 40%;
+    }
+    
+    /* Giảm font size của Tiêu đề to cho khỏi tràn màn hình */
+    .hero-content h1 {
+        font-size: 2.2rem !important;
+    }
+    
+    .luxury-search-bar {
+        padding: 20px; /* Thu gọn padding form trên mobile */
+    }
 }

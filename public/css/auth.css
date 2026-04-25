@@ -1,13 +1,30 @@
-/* Card dành riêng cho form đăng nhập/đăng ký */
+/* --- BẢNG MÀU LUXURY ĐỒNG BỘ --- */
+:root {
+    --crimson: #A6192E;
+    --gold: #D4AF37;
+    --dark-bg: #1a1a1c;
+    --charcoal: #252528; /* Nền các thẻ Card */
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+}
+
+h2, h3, .luxury-title {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+}
+
+/* --- CARD FORM ĐĂNG NHẬP/ĐĂNG KÝ --- */
 .auth-card {
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* Tăng bóng đổ cho sang trọng */
+    /* Tăng bóng đổ cực mạnh để Card nổi hẳn lên trên ảnh nền */
+    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.7) !important;
     overflow: hidden;
+    background-color: var(--charcoal);
     animation: fadeInDown 0.6s ease-out;
 }
 
-/* Cột chứa hình ảnh */
+/* --- CỘT HÌNH ẢNH MẶT TRÁI (CHỈ HIỆN TRÊN DESKTOP) --- */
 .auth-image-side {
     background-size: cover;
     background-position: center;
@@ -15,85 +32,151 @@
     min-height: 100%;
 }
 
-/* Lớp phủ lên ảnh cho trang Đăng Nhập (Tone Xanh dương) */
 .auth-image-overlay {
-    background: linear-gradient(to bottom, rgba(13, 110, 253, 0.2), rgba(0, 0, 0, 0.8));
+    background: linear-gradient(to bottom, rgba(26, 26, 28, 0.4), rgba(26, 26, 28, 0.95));
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 3rem;
-    color: white;
     text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Lớp phủ lên ảnh cho trang Đăng Ký (Tone Xanh lá) */
-.auth-image-overlay.success-overlay {
-    background: linear-gradient(to bottom, rgba(25, 135, 84, 0.2), rgba(0, 0, 0, 0.8));
+/* --- CỘT FORM MẶT PHẢI --- */
+.auth-form-side {
+    background-color: var(--charcoal);
 }
 
-/* Tùy chỉnh ô nhập liệu (Input) */
-.input-group-text {
-    background-color: #f8f9fa; /* Thêm nền xám nhạt cho icon */
-    border-right: none;
-    color: #6c757d;
+/* Font chữ input/label nhỏ lại cho tinh tế */
+.form-label {
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .auth-input {
-    border-left: none;
-    padding: 14px 15px; /* Tăng độ dày ô nhập liệu */
-    background-color: #f8f9fa;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 12px 15px !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    color: #ffffff !important;
+    font-size: 0.95rem; 
+    border-radius: 10px !important;
+}
+
+.auth-input::placeholder {
+    color: #6c757d !important;
+    font-size: 0.9rem;
 }
 
 .auth-input:focus {
-    background-color: #ffffff;
-    box-shadow: none;
-    border-color: #dee2e6;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+/* Viền Vàng Kim khi Focus */
 .input-group:focus-within {
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    border-radius: 0.375rem;
+    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.15) !important;
+    border-radius: 10px;
 }
-
-.input-group:focus-within .auth-input,
-.input-group:focus-within .input-group-text {
-    background-color: #ffffff;
-}
-
-/* Nút ẩn/hiện mật khẩu */
-.toggle-password {
-    cursor: pointer;
-    background-color: #f8f9fa;
-    border-left: none;
+.input-group:focus-within .auth-input {
+    border-color: var(--gold) !important;
 }
 
 /* Hiệu ứng xuất hiện */
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-/* --- BỔ SUNG CHO MOBILE */
+
+/* ====================================================
+   FIX MOBILE: FORM TRONG SUỐT 100%, CHỮ & KHỐI NỔI BẬT LÊN
+   ==================================================== */
 @media (max-width: 767.98px) {
+    /* Thân Card chứa ảnh nền gốc */
     .auth-card {
-        /* Lấy biến ảnh từ HTML đắp vào làm nền */
         background-image: var(--mobile-bg);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        border-radius: 20px;
+        position: relative;
     }
     
-    /* Cột chứa Form sẽ biến thành một tấm kính mờ */
+    /* TUYỆT ĐỐI KHÔNG DÙNG LỚP PHỦ TRÊN ẢNH NỀN GỐC */
+    .auth-card::before {
+        display: none !important;
+    }
+    
+    /* LÀM NỀN FORM TRONG SUỐT HOÀN TOÀN */
     .auth-form-side {
-        background-color: rgba(255, 255, 255, 0.88); /* Nền trắng trong suốt 88% */
-        backdrop-filter: blur(8px); /* Làm nhòe ảnh nền phía sau Form */
-        border-radius: 20px;
+        background-color: transparent !important; 
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* ĐỔ BÓNG ĐEN CHO CHỮ ĐỂ TRÁNH BỊ CHÌM VÀO ẢNH SÁNG */
+    .auth-form-side h3, 
+    .auth-form-side p, 
+    .auth-form-side .form-check-label, 
+    .auth-form-side a {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 0.8) !important;
+        color: #ffffff !important;
+    }
+
+    /* Đổ bóng riêng cho các chữ màu Vàng Kim (Gold) */
+    .auth-form-side .text-gold, 
+    .auth-form-side .form-label {
+        color: var(--gold) !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 1), 0 0 12px rgba(0, 0, 0, 0.9) !important;
+    }
+
+    .auth-form-side i {
+        filter: drop-shadow(1px 1px 2px rgba(0,0,0,1));
+    }
+
+    /* ==============================================
+       FIX KHỐI NHẬP LIỆU: MÀU CHỮ, ICON & KHE HỞ
+       ============================================== */
+    .input-group {
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7) !important;
+        border-radius: 10px;
+    }
+    
+    .input-group-text {
+        background-color: rgba(15, 15, 17, 0.85) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-right: none !important; /* Nối liền mạch với ô input */
+        color: #ffffff !important; /* Icon màu trắng sáng */
+    }
+
+    .auth-input {
+        background-color: rgba(15, 15, 17, 0.85) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-left: none !important; /* Xóa viền cấn ở giữa */
+        border-right: none !important;
+        color: #ffffff !important;
+    }
+
+    .toggle-password {
+        background-color: rgba(15, 15, 17, 0.85) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-left: none !important;
+        color: #ffffff !important; /* Icon mắt màu trắng */
+    }
+
+    /* FIX MÀU CHỮ PLACEHOLDER TRÊN NỀN ĐEN */
+    .auth-input::placeholder {
+        color: rgba(255, 255, 255, 0.6) !important; /* Trắng mờ 60% cực sang */
+        font-weight: 400;
+    }
+
+    /* NÚT BẤM CŨNG CẦN BÓNG ĐỔ ĐẬM */
+    .btn-crimson {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 4px 15px rgba(166, 25, 46, 0.6) !important;
     }
 }

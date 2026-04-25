@@ -1,24 +1,66 @@
+/* --- BẢNG MÀU LUXURY ĐỒNG BỘ --- */
+:root {
+    --crimson: #A6192E;
+    --gold: #D4AF37;
+    --dark-bg: #1a1a1c;
+    --charcoal: #252528;
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+}
+
+h1, h2, h3, h4, h5, h6, .luxury-title {
+    font-family: 'Playfair Display', serif;
+}
+
+/* --- KHUNG THẺ ĐẶT PHÒNG --- */
 .booking-card {
+    background-color: var(--charcoal);
     border-radius: 20px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 }
+
+/* --- HEADER THẺ (THAY XANH DƯƠNG THÀNH ĐEN KHÓI + VÀNG KIM) --- */
 .booking-header {
-    background: linear-gradient(135deg, #198754 0%, #20c997 100%);
-    padding: 20px;
+    background: linear-gradient(135deg, #111112 0%, #1a1a1c 100%);
+    padding: 35px 20px;
+    border-bottom: 2px solid var(--crimson);
 }
+
+/* --- HỘP THÔNG TIN (INFO BOX) --- */
 .info-box {
-    background-color: #f8f9fa;
-    border-left: 4px solid #0d6efd;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.2) !important; /* Nền mờ xuyên thấu */
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-left: 4px solid var(--gold) !important; /* Viền trái màu Vàng Kim */
+    padding: 25px !important;
+    border-radius: 12px !important;
+    color: var(--text-main);
 }
+
+/* --- Ô NHẬP LIỆU (INPUT) DÀNH RIÊNG CHO DARK MODE --- */
 .form-control {
-    border-radius: 10px;
-    padding: 12px;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border-radius: 12px;
+    padding: 15px;
+    color-scheme: dark; /* Bật lịch tối của Chrome/Safari */
+    font-weight: 500;
 }
 .form-control:focus {
-    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
-    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25) !important;
+    border-color: var(--gold) !important;
+}
+
+/* Đổi icon lịch thành trắng */
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* --- KHUNG TẠM TÍNH (THAY XANH DƯƠNG THÀNH ĐỎ ĐÔ MỜ) --- */
+.calculation-box {
+    background-color: rgba(166, 25, 46, 0.1) !important; /* Đỏ mờ */
+    border: 1px solid rgba(166, 25, 46, 0.3) !important;
 }
