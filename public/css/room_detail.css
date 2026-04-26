@@ -54,9 +54,17 @@ h1, h2, h3, h4, h5, h6, .luxury-title {
 }
 
 /* Đổi icon lịch thành trắng */
+/* Đổi icon lịch thành TRẮNG TINH 100% */
 ::-webkit-calendar-picker-indicator {
-    filter: invert(1);
+    /* Mẹo: Biến thành đen tuyệt đối (0) rồi đảo ngược thành trắng tuyệt đối (1) */
+    filter: brightness(0) invert(1);
     cursor: pointer;
+    opacity: 0.7; /* Trắng mờ nhẹ cho tiệp với màu chữ text-white-50 */
+    transition: opacity 0.2s ease;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+    opacity: 1; /* Sáng rực lên khi người dùng đưa chuột vào */
 }
 
 /* --- KHUNG TẠM TÍNH (THAY XANH DƯƠNG THÀNH ĐỎ ĐÔ MỜ) --- */

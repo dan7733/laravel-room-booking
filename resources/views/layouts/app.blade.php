@@ -34,17 +34,20 @@
 
                     @auth
                     <hr class="d-lg-none text-white-50 my-2">
-                    @if(Auth::user()->role === 'admin')
-                    <li class="nav-item ms-lg-4">
-                        <a class="nav-link text-warning {{ request()->is('admin/rooms*') ? 'active' : '' }}" href="{{ route('admin.rooms.index') }}"><i class="fa-solid fa-hotel me-1"></i>QL Phòng</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-warning {{ request()->is('admin/bookings*') ? 'active' : '' }}" href="{{ route('admin.bookings.index') }}"><i class="fa-solid fa-clipboard-check me-1"></i>QL Lịch Đặt</a>
-                    </li>
-                    @else
-                    <li class="nav-item ms-lg-4">
-                        <a class="nav-link text-gold {{ request()->is('my-bookings') ? 'active' : '' }}" href="{{ route('bookings.my') }}"><i class="fa-solid fa-clock-rotate-left me-1"></i>Lịch sử của bạn</a>
-                    </li>
+                    
+                    @if(Auth::user()->hasVerifiedEmail())
+                        @if(Auth::user()->role === 'admin')
+                        <li class="nav-item ms-lg-4">
+                            <a class="nav-link text-warning {{ request()->is('admin/rooms*') ? 'active' : '' }}" href="{{ route('admin.rooms.index') }}"><i class="fa-solid fa-hotel me-1"></i>QL Phòng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-warning {{ request()->is('admin/bookings*') ? 'active' : '' }}" href="{{ route('admin.bookings.index') }}"><i class="fa-solid fa-clipboard-check me-1"></i>QL Lịch Đặt</a>
+                        </li>
+                        @else
+                        <li class="nav-item ms-lg-4">
+                            <a class="nav-link text-gold {{ request()->is('my-bookings') ? 'active' : '' }}" href="{{ route('bookings.my') }}"><i class="fa-solid fa-clock-rotate-left me-1"></i>Lịch sử của bạn</a>
+                        </li>
+                        @endif
                     @endif
                     @endauth
                 </ul>
@@ -53,10 +56,16 @@
                     @auth
                     <hr class="d-lg-none text-white-50 my-2">
                     <li class="nav-item">
-                        <span class="nav-link text-white fw-bold">
-                            <i class="fa-solid fa-circle-user fs-5 align-middle me-1 text-gold"></i> {{ Auth::user()->name }}
-                            @if(Auth::user()->role === 'admin')
-                            <span class="badge bg-crimson ms-1">Admin</span>
+                        <span class="nav-link text-white fw-bold d-flex align-items-center">
+                            <i class="fa-solid fa-circle-user fs-5 me-2 text-gold"></i> 
+                            {{ Auth::user()->name }}
+                            
+                            @if(!Auth::user()->hasVerifiedEmail())
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7rem;"><i class="fa-solid fa-hourglass-half me-1"></i>Chờ xác thực</span>
+                            @elseif(Auth::user()->role === 'admin')
+                                <span class="badge bg-crimson ms-2" style="font-size: 0.7rem;">Admin</span>
+                            @else
+                                <span class="badge bg-success ms-2" style="font-size: 0.7rem;"><i class="fa-solid fa-check me-1"></i>Hội viên</span>
                             @endif
                         </span>
                     </li>
