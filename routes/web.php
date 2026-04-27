@@ -66,3 +66,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('bookings/{booking}/reject', [AdminBookingController::class, 'reject'])->name('bookings.reject');
     Route::patch('rooms/{room}/toggle-status', [\App\Http\Controllers\Admin\RoomController::class, 'toggleStatus'])->name('rooms.toggle-status');
 });
+
+
+// 6. KHU VỰC QUÊN VÀ ĐẶT LẠI MẬT KHẨU
+// 1. Trang nhập Email để lấy lại mật khẩu
+Route::get('/forgot-password', [\App\Http\Controllers\AuthController::class, 'showForgotPassword'])->name('password.request');
+// 2. Xử lý gửi mail link reset
+Route::post('/forgot-password', [\App\Http\Controllers\AuthController::class, 'sendResetLink'])->name('password.email');
+// 3. Trang đặt lại mật khẩu mới (khi bấm từ mail vào)
+Route::get('/reset-password/{token}', [\App\Http\Controllers\AuthController::class, 'showResetPassword'])->name('password.reset');
+// 4. Xử lý lưu mật khẩu mới
+Route::post('/reset-password', [\App\Http\Controllers\AuthController::class, 'resetPassword'])->name('password.update');

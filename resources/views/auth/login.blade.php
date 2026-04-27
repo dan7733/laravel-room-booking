@@ -54,7 +54,7 @@
                                         Ghi nhớ đăng nhập
                                     </label>
                                 </div>
-                                <a href="#" class="text-decoration-none text-gold fw-semibold small">Quên mật khẩu?</a>
+                                <a href="/forgot-password" class="text-decoration-none text-gold fw-semibold small">Quên mật khẩu?</a>
                             </div>
 
                             <button type="submit" class="btn btn-crimson btn-lg w-100 py-3 fw-bold fs-6 shadow-sm rounded-pill mb-4">

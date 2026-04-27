@@ -56,4 +56,19 @@ class User extends Authenticatable implements MustVerifyEmail
             \Illuminate\Support\Facades\Log::error('Lỗi gửi mail xác thực: ' . $e->getMessage());
         }
     }
+    public function sendPasswordResetNotification($token)
+    {
+        try {
+            $url = url(route('password.reset', [
+                'token' => $token,
+                'email' => $this->getEmailForPasswordReset(),
+            ], false));
+
+            // Dùng dấu \ ở trước App để tránh lỗi không tìm thấy Class
+            \Illuminate\Support\Facades\Mail::to($this->email)
+                ->send(new \App\Mail\ResetPasswordMail($this, $url));
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Lỗi Mail Reset: ' . $e->getMessage());
+        }
+    }
 }
