@@ -29,21 +29,13 @@ Route::middleware('guest')->group(function () {
 // ==========================================
 Route::middleware('auth')->group(function () {
     // 3.1. Trang thông báo yêu cầu kiểm tra email
-    Route::get('/email/verify', function () {
-        return view('auth.verify');
-    })->name('verification.notice');
+    Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
 
     // 3.2. Đường link người dùng bấm vào từ trong Email
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill(); // Đánh dấu là đã xác nhận
-        return redirect('/')->with('success', 'Kích hoạt đặc quyền hội viên thành công! Chào mừng Quý khách.');
-    })->middleware(['signed'])->name('verification.verify');
+    Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
 
     // 3.3. Nút "Gửi lại email" nếu khách không nhận được
-    Route::post('/email/verification-notification', function (Request $request) {
-        $request->user()->sendEmailVerificationNotification();
-        return back()->with('success', 'Đã gửi lại link kích hoạt. Vui lòng kiểm tra hộp thư đến (hoặc Spam).');
-    })->middleware(['throttle:6,1'])->name('verification.send');
+    Route::post('/email/verification-notification', [AuthController::class, 'sendVerificationEmail'])->middleware('throttle:6,1')->name('verification.send');
 
     // Cho phép đăng xuất mọi lúc
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

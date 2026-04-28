@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
@@ -46,6 +47,29 @@ class AuthController extends Controller
 
         // 3. Chuyển hướng sang trang thông báo
         return redirect()->route('verification.notice');
+    }
+    // ==========================================
+    // CHỨC NĂNG XÁC THỰC EMAIL
+    // ==========================================
+    
+    // 1. Hiện trang thông báo check mail
+    public function verifyNotice()
+    {
+        return view('auth.verify');
+    }
+
+    // 2. Xử lý khi user bấm link trong mail
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        $request->fulfill(); // Đánh dấu là đã xác nhận
+        return redirect('/')->with('success', 'Kích hoạt đặc quyền hội viên thành công! Chào mừng Quý khách.');
+    }
+
+    // 3. Xử lý nút bấm gửi lại mail
+    public function sendVerificationEmail(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('success', 'Đã gửi lại link kích hoạt. Vui lòng kiểm tra hộp thư đến (hoặc Spam).');
     }
 
     public function showLogin()
