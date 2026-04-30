@@ -5,12 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\BookingController;
-
-// THÊM 2 THƯ VIỆN NÀY ĐỂ XỬ LÝ MAIL XÁC THỰC
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-// 1. CÁC TRANG CÔNG KHAI (Không cần đăng nhập) 
+// 1. CÁC TRANG CÔNG KHAI
 Route::get('/', [BookingController::class, 'index'])->name('home');
 Route::get('/room/{room}', [BookingController::class, 'show'])->name('rooms.show');
 Route::view('/about', 'pages.about')->name('about');
@@ -22,50 +20,43 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister']);
     Route::post('/register', [AuthController::class, 'register']);
+    
+    // Quên mật khẩu
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
-// ==========================================
-// 3. CÁC ROUTE XÁC THỰC EMAIL (Cần đăng nhập)
-// ==========================================
+// 3. CÁC ROUTE XÁC THỰC EMAIL
 Route::middleware('auth')->group(function () {
-    // 3.1. Trang thông báo yêu cầu kiểm tra email
     Route::get('/email/verify', [AuthController::class, 'verifyNotice'])->name('verification.notice');
-
-    // 3.2. Đường link người dùng bấm vào từ trong Email
     Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
-
-    // 3.3. Nút "Gửi lại email" nếu khách không nhận được
     Route::post('/email/verification-notification', [AuthController::class, 'sendVerificationEmail'])->middleware('throttle:6,1')->name('verification.send');
-
-    // Cho phép đăng xuất mọi lúc
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-// ==========================================
 // 4. CÁC TRANG DÀNH CHO HỘI VIÊN ĐÃ KÍCH HOẠT
-// ==========================================
-// ĐÃ THÊM MIDDLEWARE 'verified' VÀO ĐÂY
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/room/{room}/book', [BookingController::class, 'book'])->name('rooms.book');
     Route::get('/my-bookings', [BookingController::class, 'myBookings'])->name('bookings.my');
+    
+    // XEM CHI TIẾT VÀ XIN HỦY PHÒNG (USER)
+    Route::get('/my-bookings/{id}', [BookingController::class, 'showBookingDetail'])->name('bookings.show_detail');
+    Route::post('/my-bookings/{id}/request-cancel', [BookingController::class, 'requestCancel'])->name('bookings.request-cancel');
 });
 
 // 5. KHU VỰC QUẢN TRỊ (ADMIN)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('rooms', RoomController::class);
+    Route::patch('rooms/{room}/toggle-status', [RoomController::class, 'toggleStatus'])->name('rooms.toggle-status');
+    
     Route::get('bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
     Route::post('bookings/{booking}/approve', [AdminBookingController::class, 'approve'])->name('bookings.approve');
     Route::post('bookings/{booking}/reject', [AdminBookingController::class, 'reject'])->name('bookings.reject');
-    Route::patch('rooms/{room}/toggle-status', [\App\Http\Controllers\Admin\RoomController::class, 'toggleStatus'])->name('rooms.toggle-status');
+    
+    // XỬ LÝ YÊU CẦU HỦY (ADMIN)
+    Route::post('bookings/{booking}/approve-cancel', [AdminBookingController::class, 'approveCancel'])->name('bookings.approve-cancel');
+    Route::post('bookings/{booking}/reject-cancel', [AdminBookingController::class, 'rejectCancel'])->name('bookings.reject-cancel');
+    Route::post('bookings/{booking}/force-cancel', [AdminBookingController::class, 'forceCancel'])->name('bookings.force-cancel');
 });
-
-
-// 6. KHU VỰC QUÊN VÀ ĐẶT LẠI MẬT KHẨU
-// 1. Trang nhập Email để lấy lại mật khẩu
-Route::get('/forgot-password', [\App\Http\Controllers\AuthController::class, 'showForgotPassword'])->name('password.request');
-// 2. Xử lý gửi mail link reset
-Route::post('/forgot-password', [\App\Http\Controllers\AuthController::class, 'sendResetLink'])->name('password.email');
-// 3. Trang đặt lại mật khẩu mới (khi bấm từ mail vào)
-Route::get('/reset-password/{token}', [\App\Http\Controllers\AuthController::class, 'showResetPassword'])->name('password.reset');
-// 4. Xử lý lưu mật khẩu mới
-Route::post('/reset-password', [\App\Http\Controllers\AuthController::class, 'resetPassword'])->name('password.update');

@@ -32,14 +32,14 @@ class BookingController extends Controller
 
         // THUẬT TOÁN LOẠI BỎ PHÒNG TRÙNG LỊCH:
         // Lọc ra các phòng KHÔNG CÓ (whereDoesntHave) đơn đặt phòng nào thỏa mãn điều kiện trùng
-        $query->whereDoesntHave('bookings', function($q) use ($start, $end) {
-            $q->whereIn('status', ['approved', 'pending'])
-              ->where(function($timeQuery) use ($start, $end) {
-                  // Điều kiện trùng lịch kinh điển: (Start_DB < End_Search) AND (End_DB > Start_Search)
-                  // Lưu ý dùng dấu < và > (thay vì <=) để cho phép khách mới check-in ngay khoảnh khắc khách cũ check-out
-                  $timeQuery->where('start_time', '<', $end)
-                            ->where('end_time', '>', $start);
-              });
+        $query->whereDoesntHave('bookings', function ($q) use ($start, $end) {
+            // ĐÃ CẬP NHẬT: Thêm 'cancel_requested' để giữ phòng khi khách đang xin hủy
+            $q->whereIn('status', ['approved', 'pending', 'cancel_requested'])
+                ->where(function ($timeQuery) use ($start, $end) {
+                    // Điều kiện trùng lịch kinh điển: (Start_DB < End_Search) AND (End_DB > Start_Search)
+                    $timeQuery->where('start_time', '<', $end)
+                        ->where('end_time', '>', $start);
+                });
         });
 
         // Lấy danh sách cuối cùng
@@ -66,12 +66,12 @@ class BookingController extends Controller
         // 2. Tính số ngày và Tổng tiền
         $start = Carbon::parse($request->start_time);
         $end = Carbon::parse($request->end_time);
-        
+
         // Đếm số ngày giữa ngày trả và ngày nhận
         $days = $start->diffInDays($end);
-        
+
         if ($days == 0) {
-            $days = 1; 
+            $days = 1;
         }
 
         $totalPrice = $days * $room->price;
@@ -82,7 +82,7 @@ class BookingController extends Controller
             'room_id' => $room->id,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
-            'total_price' => $totalPrice, 
+            'total_price' => $totalPrice,
             'status' => 'pending'
         ]);
 
@@ -106,5 +106,37 @@ class BookingController extends Controller
             ->latest()
             ->get();
         return view('user.my_bookings', compact('bookings'));
+    }
+
+    // THÊM: Xem chi tiết đơn đặt phòng
+    public function showBookingDetail($id)
+    {
+        $booking = Booking::where('id', $id)->where('user_id', Auth::id())->with('room')->firstOrFail();
+        return view('user.booking_detail', compact('booking'));
+    }
+
+    // THÊM: Logic yêu cầu hủy
+    public function requestCancel(Request $request, $id) 
+    {
+        $request->validate([
+            'cancel_reason' => 'nullable|string|max:500' // Validate lý do
+        ]);
+
+        $booking = Booking::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+        if (Carbon::now()->greaterThanOrEqualTo($booking->start_time)) {
+            return back()->withErrors(['error' => 'Không thể hủy vì đã quá hạn nhận phòng.']);
+        }
+
+        $booking->status = 'cancel_requested';
+        $booking->cancel_reason = $request->cancel_reason; // Lưu lý do vào DB
+        $booking->save();
+
+        // Gửi mail báo tiếp nhận yêu cầu hủy
+        try {
+            Mail::to($booking->user->email)->send(new \App\Mail\BookingStatusNotification($booking, 'request_cancel'));
+        } catch (\Throwable $e) {}
+
+        return back()->with('success', 'Đã gửi yêu cầu hủy phòng. Vui lòng chờ quản trị viên xác nhận.');
     }
 }

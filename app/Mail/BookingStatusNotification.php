@@ -10,18 +10,30 @@ class BookingStatusNotification extends Mailable
     use Queueable, SerializesModels;
 
     public $booking;
+    public $action; 
 
-    public function __construct($booking)
+    public function __construct($booking, $action = null)
     {
         $this->booking = $booking;
+        $this->action = $action;
     }
 
     public function build()
     {
-        // Tự động thay đổi tiêu đề dựa trên trạng thái
-        $statusText = $this->booking->status == 'approved' ? 'Đã được Duyệt' : 'Bị Từ Chối';
+        $subject = 'Cập nhật trạng thái đặt phòng - RoomBooking';
         
-        return $this->subject("Kết quả đặt phòng: $statusText - RoomBooking")
-                    ->view('emails.booking_status');
+        if ($this->action == 'request_cancel') {
+            $subject = 'Đã tiếp nhận yêu cầu hủy phòng - RoomBooking';
+        } elseif ($this->action == 'reject_cancel') {
+            $subject = 'Từ chối yêu cầu hủy phòng - RoomBooking';
+        } elseif ($this->action == 'approve_cancel' || $this->action == 'force_cancel') {
+            $subject = 'Phòng của bạn đã bị hủy - RoomBooking';
+        } elseif ($this->action == 'approved') {
+            $subject = 'Đã duyệt yêu cầu đặt phòng - RoomBooking';
+        } elseif ($this->action == 'rejected') {
+            $subject = 'Từ chối yêu cầu đặt phòng - RoomBooking';
+        }
+
+        return $this->subject($subject)->view('emails.booking_status');
     }
 }

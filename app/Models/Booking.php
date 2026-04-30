@@ -15,7 +15,8 @@ class Booking extends Model
         'start_time',
         'end_time',
         'total_price', // Đã thêm
-        'status'
+        'status',
+        'cancel_reason'
     ];
 
     public function user()
