@@ -10,10 +10,24 @@ use App\Mail\BookingStatusNotification;
 
 class BookingController extends Controller
 {
-    public function index()
+    // CẬP NHẬT: Thêm chức năng lọc theo trạng thái
+    public function index(Request $request)
     {
-        $bookings = Booking::with(['user', 'room'])->latest()->get();
+        $query = Booking::with(['user', 'room'])->latest();
+
+        // Nếu admin chọn bộ lọc
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $bookings = $query->get();
         return view('admin.bookings.index', compact('bookings'));
+    }
+
+    public function show(Booking $booking)
+    {
+        $booking->load(['user', 'room']); 
+        return view('admin.bookings.show', compact('booking'));
     }
 
     public function approve(Booking $booking)
@@ -45,7 +59,6 @@ class BookingController extends Controller
         return back()->with('success', 'Đã từ chối yêu cầu hủy. Đơn vẫn giữ nguyên hiệu lực.');
     }
 
-    // Đã thêm Request để lấy lý do từ Modal
     public function forceCancel(Request $request, Booking $booking)
     {
         $request->validate([
@@ -54,14 +67,13 @@ class BookingController extends Controller
 
         $booking->update([
             'status' => 'cancelled',
-            'cancel_reason' => $request->cancel_reason // Lưu lý do Admin nhập
+            'cancel_reason' => $request->cancel_reason 
         ]);
         
         $this->sendMailSafe($booking, 'force_cancel', 'Hệ thống cưỡng chế hủy đơn.');
         return back()->with('success', 'Đã cưỡng chế hủy đơn đặt phòng này.');
     }
 
-    // Cập nhật hàm này để nhận biến $action
     private function sendMailSafe(Booking $booking, $action, $adminMessage)
     {
         try {
