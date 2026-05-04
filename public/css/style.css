@@ -70,6 +70,43 @@ a:hover {
     color: var(--gold) !important;
 }
 
+/* ==============================================================
+   LUXURY DROPDOWN MENU (Subnavbar) - FIX MÀU XANH BOOTSTRAP 
+============================================================== */
+.luxury-dropdown {
+    background-color: var(--charcoal);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-top: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
+}
+.luxury-dropdown .dropdown-item {
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+/* Trạng thái Hover: Sáng nhẹ viền nền, chữ thành Vàng */
+.luxury-dropdown .dropdown-item:hover,
+.luxury-dropdown .dropdown-item:focus {
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+}
+/* Trạng thái Active: Xóa màu xanh mặc định, đổi thành Vàng - Đen */
+.luxury-dropdown .dropdown-item.active,
+.luxury-dropdown .dropdown-item:active {
+    background-color: var(--gold) !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+.luxury-dropdown .dropdown-divider {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+.icon-menu-fixed {
+    width: 25px;
+    text-align: center;
+}
+
 /* --- UTILITIES --- */
 .text-crimson { color: var(--crimson) !important; }
 .text-gold { color: var(--gold) !important; }
@@ -99,7 +136,7 @@ a:hover {
 
 /* --- FOOTER LUXURY --- */
 .main-footer {
-    background-color: #111112 !important; /* Đen sâu hơn một chút để tạo độ khối */
+    background-color: #111112 !important; 
     color: var(--text-muted) !important;
     border-top: 1px solid rgba(212, 175, 55, 0.2);
 }
@@ -108,7 +145,6 @@ a:hover {
     color: #ffffff !important;
 }
 
-/* Link ở Footer: Mặc định xám, rê chuột đổi Vàng Kim + trượt nhẹ */
 .footer-link {
     color: var(--text-muted) !important;
     display: inline-block;

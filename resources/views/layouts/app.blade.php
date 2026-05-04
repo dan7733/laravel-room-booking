@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoomBooking Signature</title>
+    <!-- Thư viện ngoài -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- CSS Tự viết (Phải load sau cùng để đè các thư viện khác) -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     @stack('styles')
 </head>
@@ -37,13 +39,32 @@
                     
                     @if(Auth::user()->hasVerifiedEmail())
                         @if(Auth::user()->role === 'admin')
-                        <li class="nav-item ms-lg-4">
-                            <a class="nav-link text-warning {{ request()->is('admin/rooms*') ? 'active' : '' }}" href="{{ route('admin.rooms.index') }}"><i class="fa-solid fa-hotel me-1"></i>QL Phòng</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning {{ request()->is('admin/bookings*') ? 'active' : '' }}" href="{{ route('admin.bookings.index') }}"><i class="fa-solid fa-clipboard-check me-1"></i>QL Lịch Đặt</a>
+                        <!-- DROPDOWN QUẢN TRỊ VIÊN ĐÃ ĐƯỢC ÁP DỤNG CSS LUXURY MỚI -->
+                        <li class="nav-item dropdown ms-lg-3">
+                            <a class="nav-link dropdown-toggle text-warning fw-bold {{ request()->is('admin*') ? 'active' : '' }}" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-shield-halved me-1"></i> Khu Vực Quản Trị
+                            </a>
+                            <ul class="dropdown-menu luxury-dropdown" aria-labelledby="adminDropdown">
+                                <li>
+                                    <a class="dropdown-item py-2 {{ request()->is('admin/rooms*') ? 'active' : '' }}" href="{{ route('admin.rooms.index') }}">
+                                        <i class="fa-solid fa-hotel me-2 icon-menu-fixed"></i> QL Phòng & Không gian
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 {{ request()->is('admin/bookings*') ? 'active' : '' }}" href="{{ route('admin.bookings.index') }}">
+                                        <i class="fa-solid fa-clipboard-check me-2 icon-menu-fixed"></i> QL Lịch Đặt
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 {{ request()->is('admin/users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+                                        <i class="fa-solid fa-users-gear me-2 icon-menu-fixed"></i> QL Người Dùng
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         @else
+                        <!-- Navbar Hội Viên (User) -->
                         <li class="nav-item ms-lg-4">
                             <a class="nav-link text-gold {{ request()->is('my-bookings') ? 'active' : '' }}" href="{{ route('bookings.my') }}"><i class="fa-solid fa-clock-rotate-left me-1"></i>Lịch sử của bạn</a>
                         </li>
@@ -63,7 +84,7 @@
                             @if(!Auth::user()->hasVerifiedEmail())
                                 <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7rem;"><i class="fa-solid fa-hourglass-half me-1"></i>Chờ xác thực</span>
                             @elseif(Auth::user()->role === 'admin')
-                                <span class="badge bg-crimson ms-2" style="font-size: 0.7rem;">Admin</span>
+                                <span class="badge ms-2" style="font-size: 0.7rem; background-color: var(--crimson);">Admin</span>
                             @else
                                 <span class="badge bg-success ms-2" style="font-size: 0.7rem;"><i class="fa-solid fa-check me-1"></i>Hội viên</span>
                             @endif
@@ -162,6 +183,7 @@
     </footer>
     @endif
 
+    <!-- Load JS (Thư viện trước, JS tự viết sau) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     @stack('scripts')

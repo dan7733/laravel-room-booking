@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
-use App\Http\Controllers\BookingController;
+use App\Http\Controllers\Admin\UserController; 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -48,19 +49,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // 5. KHU VỰC QUẢN TRỊ (ADMIN)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // ================= QUẢN LÝ PHÒNG =================
     Route::resource('rooms', RoomController::class);
     Route::patch('rooms/{room}/toggle-status', [RoomController::class, 'toggleStatus'])->name('rooms.toggle-status');
     
+    // ================= QUẢN LÝ ĐẶT PHÒNG =================
     Route::get('bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
-    
-    // THÊM: Route xem chi tiết đơn hàng cho Admin
-    Route::get('bookings/{booking}', [AdminBookingController::class, 'show'])->name('bookings.show');
-    
+    Route::get('bookings/{booking}', [AdminBookingController::class, 'show'])->name('bookings.show'); // Xem chi tiết
     Route::post('bookings/{booking}/approve', [AdminBookingController::class, 'approve'])->name('bookings.approve');
     Route::post('bookings/{booking}/reject', [AdminBookingController::class, 'reject'])->name('bookings.reject');
-    
-    // XỬ LÝ YÊU CẦU HỦY (ADMIN)
     Route::post('bookings/{booking}/approve-cancel', [AdminBookingController::class, 'approveCancel'])->name('bookings.approve-cancel');
     Route::post('bookings/{booking}/reject-cancel', [AdminBookingController::class, 'rejectCancel'])->name('bookings.reject-cancel');
     Route::post('bookings/{booking}/force-cancel', [AdminBookingController::class, 'forceCancel'])->name('bookings.force-cancel');
+
+    // ================= QUẢN LÝ NGƯỜI DÙNG =================
+    // Code đã được làm cho ngắn gọn và đồng bộ
+    Route::resource('users', UserController::class)->except(['show']);
+    Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status'); 
+
 });
