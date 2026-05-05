@@ -1,58 +1,145 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# RoomBooking Signature
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+RoomBooking Signature là hệ thống quản lý và đặt phòng không gian làm việc cao cấp. Dự án hỗ trợ khách hàng đặt phòng nhanh chóng và cung cấp công cụ quản trị mạnh mẽ cho quản trị viên, với giao diện tối giản, chuyên nghiệp.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Chức năng chính
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Khu vực người dùng
+- Đăng ký, đăng nhập, xác thực email
+- Xem danh sách phòng và chi tiết
+- Đặt phòng, tránh trùng lịch
+- Theo dõi trạng thái đặt phòng
+- Gửi yêu cầu hủy phòng
+- Nhận thông báo qua email
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Khu vực quản trị
+- Quản lý phòng (thêm, sửa, xóa, khóa/mở)
+- Quản lý đơn đặt phòng (duyệt, từ chối, hủy)
+- Ép hủy đơn và gửi thông báo
+- Quản lý người dùng (tạo, cập nhật, khóa, xóa)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Công nghệ sử dụng
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Laravel 13.5.0 (PHP 8.3.30)
+- MySQL
+- Blade Template Engine
+- Bootstrap 5
+- JavaScript
+- SMTP (Gmail/Mailtrap)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## Cấu trúc thư mục
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+roombooking/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/
+│   │   │   ├── AuthController.php
+│   │   │   └── BookingController.php
+│   │   └── Middleware/
+│   │   └── Requests/
+│   ├── Mail/
+│   └── Models/
+├── database/
+│   └── migrations/
+├── public/
+│   ├── css/
+│   └── js/
+├── resources/
+│   └── views/
+│       ├── admin/
+│       └── auth/
+│       ├── emails/
+│       ├── layouts/
+│       ├── pages/
+│       └── partials/
+│       └── user/
+└── routes/
+    └── web.php
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## Hướng dẫn cài đặt
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Clone dự án
+```
+git clone <repo-url>
+cd roombooking
+```
 
-## Code of Conduct
+### 2. Cài đặt thư viện
+```
+composer install
+npm install
+npm run build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Cấu hình môi trường
+```
+cp .env.example .env
+```
 
-## Security Vulnerabilities
+### 4. Tạo key và database
+```
+php artisan key:generate
+php artisan migrate --seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Chạy ứng dụng
+```
+php artisan serve
+```
 
-## License
+Truy cập: http://localhost:8000
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Cấu hình .env
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=roombooking_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="no-reply@roombooking.com"
+MAIL_FROM_NAME="RoomBooking Signature"
+```
+
+---
+
+## Route cơ bản
+
+| Method | Route | Quyền | Mô tả |
+|--------|------|------|------|
+| GET | / | Public | Trang chủ |
+| GET/POST | /login, /register | Guest | Xác thực |
+| GET | /email/verify | Auth | Xác thực email |
+| GET | /my-bookings | User | Xem lịch sử |
+| POST | /room/{id}/book | User | Đặt phòng |
+| POST | /my-bookings/{id}/request-cancel | User | Yêu cầu hủy |
+| GET | /admin/rooms | Admin | Quản lý phòng |
+| GET | /admin/bookings | Admin | Quản lý booking |
+| POST | /admin/bookings/{id}/force-cancel | Admin | Ép hủy |
+| GET | /admin/users | Admin | Quản lý user |
+| PATCH | /admin/users/{id}/toggle-status | Admin | Khóa/mở user |
+
+---
+
+Ứng dụng được xây dựng theo kiến trúc Laravel MVC, đảm bảo rõ ràng, dễ mở rộng và bảo trì.
