@@ -67,60 +67,75 @@ roombooking/
 
 ---
 
-## Hướng dẫn cài đặt
+## ⚙️ Hướng dẫn cài đặt (Local)
 
-### 1. Clone dự án
-```
+``` bash
 git clone <repo-url>
 cd roombooking
-```
-
-### 2. Cài đặt thư viện
-```
 composer install
 npm install
 npm run build
-```
-
-### 3. Cấu hình môi trường
-```
 cp .env.example .env
-```
-
-### 4. Tạo key và database
-```
 php artisan key:generate
 php artisan migrate --seed
-```
-
-### 5. Chạy ứng dụng
-```
 php artisan serve
 ```
 
-Truy cập: http://localhost:8000
+👉 Truy cập: http://localhost:8000
+
+---
+
+## 🐳 Chạy bằng Docker (Port 8000)
+
+### 1. Build và chạy container
+
+``` bash
+docker-compose up -d --build
+```
+
+### 2. Cài đặt bên trong container
+
+``` bash
+docker exec -it roombooking_app composer install
+docker exec -it roombooking_app npm install
+docker exec -it roombooking_app npm run build
+docker exec -it roombooking_app php artisan key:generate
+docker exec -it roombooking_app php artisan migrate --seed
+```
+
+👉 Truy cập: http://localhost:8000
+
+---
+
+### Lệnh Docker hữu ích
+
+``` bash
+docker-compose down
+docker-compose down -v
+docker ps
+docker logs -f roombooking_app
+docker-compose restart
+```
 
 ---
 
 ## Cấu hình .env
 
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=roombooking_db
-DB_USERNAME=root
-DB_PASSWORD=
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=roombooking_db
+    DB_USERNAME=root
+    DB_PASSWORD=
 
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=your_email@gmail.com
-MAIL_PASSWORD=your_app_password
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS="no-reply@roombooking.com"
-MAIL_FROM_NAME="RoomBooking Signature"
-```
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.gmail.com
+    MAIL_PORT=587
+    MAIL_USERNAME=your_email@gmail.com
+    MAIL_PASSWORD=your_app_password
+    MAIL_ENCRYPTION=tls
+    MAIL_FROM_ADDRESS="no-reply@roombooking.com"
+    MAIL_FROM_NAME="RoomBooking Signature"
 
 ---
 
